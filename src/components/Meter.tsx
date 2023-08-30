@@ -1,18 +1,65 @@
 import { FC, useState, useEffect } from "react";
 import CircleProgress from "./CircleProgress";
 import HourHandIcon from "./Icons/HourHandIcon";
+import DownloadIcon from "./Icons/DownloadIcon";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import { setterValues } from "../redux/speedSlice";
+import UploadIcon from "./Icons/UploadIcon";
 
 const Meter: FC = () => {
-  // const [status, setStatus] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const [status, setStatus] = useState<boolean>(false);
   const [speed, setSpeed] = useState<number>(0);
+  const [completed, setCompleted] = useState<string>("");
 
-  // const clickTest = (): void => {
-  //   setStatus(!status);
-  // };
+  function generateRandomNumberWithDecimal() {
+    const startTime = Date.now();
+    const endTime = startTime + 30000; // 30 seconds
+
+    return new Promise(() => {
+      const interval = setInterval(() => {
+        if (Date.now() >= endTime) {
+          clearInterval(interval);
+          if (completed === "") {
+            setCompleted("download");
+          } else {
+            setCompleted("upload");
+          }
+        } else {
+          const randomNumber = Math.random() * 10 + 70;
+          const speedNum: number = parseFloat(randomNumber.toFixed(2));
+          setSpeed(speedNum);
+        }
+      }, 700);
+    });
+  }
+
+  async function main() {
+    await generateRandomNumberWithDecimal();
+  }
+
+  const clickTest = (): void => {
+    if (status === true) {
+      return;
+    }
+    setStatus(true);
+    main();
+  };
 
   useEffect(() => {
-    setSpeed(0);
-  }, []);
+    if (completed === "download") {
+      dispatch(setterValues({ name: "download", value: speed }));
+      setSpeed(0);
+      setTimeout(() => {
+        main();
+      }, 1000);
+    } else if (completed === "upload") {
+      dispatch(setterValues({ name: "upload", value: speed }));
+      dispatch(setterValues({ name: "ping", value: 150 }));
+      dispatch(setterValues({ name: "completed", value: true }));
+    }
+  }, [completed]);
 
   return (
     <>
@@ -42,7 +89,7 @@ const Meter: FC = () => {
               />
             </div>
           </div>
-          <div className="[&>span]:transition-all" >
+          <div className="[&>span]:transition-all">
             <span
               className={`text-2xl absolute left-[22%] bottom-[20%] ${
                 speed > 0 ? "text-[#126AED]" : ""
@@ -85,43 +132,67 @@ const Meter: FC = () => {
             >
               50
             </span>
-            <span className={`text-2xl absolute right-[28%] top-[17%] ${speed > 60 ? "text-[#126AED]" : ""}`}>60</span>
-            <span className={`text-2xl absolute right-[18%] bottom-[62%] ${speed > 70 ? "text-[#126AED]" : ""}`}>
+            <span
+              className={`text-2xl absolute right-[28%] top-[17%] ${
+                speed > 60 ? "text-[#126AED]" : ""
+              }`}
+            >
+              60
+            </span>
+            <span
+              className={`text-2xl absolute right-[18%] bottom-[62%] ${
+                speed > 70 ? "text-[#126AED]" : ""
+              }`}
+            >
               70
             </span>
-            <span className={`text-2xl absolute right-[13%] bottom-[48%] ${speed > 80 ? "text-[#126AED]" : ""}`}>
+            <span
+              className={`text-2xl absolute right-[13%] bottom-[48%] ${
+                speed > 80 ? "text-[#126AED]" : ""
+              }`}
+            >
               80
             </span>
-            <span className={`text-2xl absolute right-[15%] bottom-[32%] ${speed > 90 ? "text-[#126AED]" : ""}`}>
+            <span
+              className={`text-2xl absolute right-[15%] bottom-[32%] ${
+                speed > 90 ? "text-[#126AED]" : ""
+              }`}
+            >
               90
             </span>
-            <span className={`text-2xl absolute right-[22%] bottom-[20%] ${speed >= 100 ? "text-[#126AED]" : ""}`}>
+            <span
+              className={`text-2xl absolute right-[22%] bottom-[20%] ${
+                speed >= 100 ? "text-[#126AED]" : ""
+              }`}
+            >
               100
             </span>
           </div>
+          <div className="w-fit absolute bottom-[10%] right-[50%] translate-x-[50%] grid place-content-center ">
+            <div className="flex flex-col justify-center items-center gap-1">
+              <span className="text-4xl">{speed === 0 ? "--" : speed}</span>
+              <div className="flex justify-center items-center gap-2">
+                <span className="text-xl">Mbps</span>
+                {completed === "download" ? (
+                  <UploadIcon className="w-[25px] h-[25px] " />
+                ) : (
+                  <DownloadIcon className="w-[25px] h-[25px] " />
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-        {/* <div
-          className={`rounded-full relative z-10 transition-all duration-500 box-content ${
-            status
-              ? "w-[350px] h-[350px] border-[#1B70EE1C] border-[0px] "
-              : "w-[200px] h-[200px] border-[5px] border-[#126AED]"
+      </section>
+      <div className="w-fit mx-auto mb-5 relative z-10">
+        <button
+          onClick={clickTest}
+          className={`bg-[#126AED] transition-all rounded-[30px] text-white text-xl py-5 px-10 hover:cursor-pointer hover:bg-[#126aedc2] ${
+            status ? "!cursor-default opacity-50 " : ""
           } `}
         >
-          {!status ? (
-            <>
-              <div className="animate-pingSlow w-full h-full border border-[#1295ed] rounded-full absolute z-[2] "></div>
-              <div
-                className="w-full h-full hover:cursor-pointer rounded-full transition-all text-2xl hover:text-white hover:bg-[#126aed10] grid place-content-center relative z-10"
-                onClick={clickTest}
-              >
-                تست
-              </div>
-            </>
-          ) : (
-            
-          )} */}
-        {/* </div> */}
-      </section>
+          شروع تست
+        </button>
+      </div>
     </>
   );
 };

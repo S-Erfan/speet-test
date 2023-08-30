@@ -7,7 +7,12 @@ interface IProps {
   percentageRage: number;
 }
 
-const CircleProgress: FC<IProps> = ({ sqSize, strokeWidth, percentage, percentageRage }) => {
+const CircleProgress: FC<IProps> = ({
+  sqSize,
+  strokeWidth,
+  percentage,
+  percentageRage,
+}) => {
   // SVG centers the stroke width on the radius, subtract out so circle fits in square
   const radius = (sqSize - strokeWidth) / 2;
   // Enclose cicle in a circumscribing square
@@ -17,7 +22,7 @@ const CircleProgress: FC<IProps> = ({ sqSize, strokeWidth, percentage, percentag
   // Scale 100% coverage overlay with the actual percent
   const dashOffset = dashArray - (dashArray * percentage) / 100;
 
-  const dashOffsetBar = dashArray - (dashArray *  (percentageRage * 0.75)) / 100
+  const dashOffsetBar = dashArray - (dashArray * (percentageRage * 0.75)) / 100;
 
   return (
     <svg
@@ -52,7 +57,6 @@ const CircleProgress: FC<IProps> = ({ sqSize, strokeWidth, percentage, percentag
         cy={sqSize / 2}
         r={radius}
         strokeWidth={`${strokeWidth}px`}
-        // Start progress marker at 12 O'Clock
         transform={`rotate(-90 ${sqSize / 2} ${sqSize / 2})`}
         style={{
           strokeDasharray: dashArray,

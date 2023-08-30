@@ -59,6 +59,12 @@ body {
   stroke: #126aed;
 }
 
+.bg {
+  background: conic-gradient(#00bcd4, #ffeb3b 180deg);
+  width: 100%;
+  height: 100%;
+}
+
 .circle-text {
   font-size: 3em;
   font-weight: bold;
