@@ -4,7 +4,12 @@ import HourHandIcon from "./Icons/HourHandIcon";
 import DownloadIcon from "./Icons/DownloadIcon";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
-import { setterValues } from "../redux/speedSlice";
+import {
+  setDownload,
+  setPing,
+  setUpload,
+  setCompleted as setCompletedStore,
+} from "../redux/speedSlice";
 import UploadIcon from "./Icons/UploadIcon";
 
 const Meter: FC = () => {
@@ -49,15 +54,15 @@ const Meter: FC = () => {
 
   useEffect(() => {
     if (completed === "download") {
-      dispatch(setterValues({ name: "download", value: speed }));
+      dispatch(setDownload({ value: speed }));
       setSpeed(0);
       setTimeout(() => {
         main();
       }, 1000);
     } else if (completed === "upload") {
-      dispatch(setterValues({ name: "upload", value: speed }));
-      dispatch(setterValues({ name: "ping", value: 150 }));
-      dispatch(setterValues({ name: "completed", value: true }));
+      dispatch(setUpload({ value: speed }));
+      dispatch(setPing({ value: 150 }));
+      dispatch(setCompletedStore({ value: true }));
     }
   }, [completed]);
 

@@ -3,13 +3,17 @@ import Container from "./components/Container";
 import Title from "./components/Title";
 import NavBar from "./components/NavBar";
 import Meter from "./components/Meter";
-import { RootState } from "./redux/store";
 import { ISpeedReduce } from "./viewModal/ISpeedReduce";
 import { useSelector } from "react-redux";
 import ResultTest from "./components/ResultTest";
 
+export interface IRootState {
+  speed: ISpeedReduce;
+}
+
 const App: FC = () => {
-  const speedInfo: ISpeedReduce = useSelector<RootState>(
+
+  const speedInfo = useSelector<IRootState, ISpeedReduce>(
     (state) => state.speed
   );
 

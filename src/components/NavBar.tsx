@@ -2,7 +2,6 @@ import { FC, ReactNode } from "react";
 import PingIcon from "./Icons/PingIcon";
 import UploadIcon from "./Icons/UploadIcon";
 import DownloadIcon from "./Icons/DownloadIcon";
-import { RootState } from "../redux/store";
 import { useSelector } from "react-redux";
 import { ISpeedReduce } from "../viewModal/ISpeedReduce";
 
@@ -13,8 +12,12 @@ interface IOptions {
   suffix: string;
 }
 
+export interface IRootState {
+  speed: ISpeedReduce;
+}
+
 const NavBar: FC = () => {
-  const speedInfo: ISpeedReduce = useSelector<RootState>(
+  const speedInfo = useSelector<IRootState, ISpeedReduce>(
     (state) => state.speed
   );
 

@@ -1,6 +1,6 @@
 export interface ISpeedReduce {
-    download: null,
-    upload: null,
-    ping: null,
+    download: null | number,
+    upload: null | number,
+    ping: null | number,
     completed: false
 }

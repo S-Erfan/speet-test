@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { ISpeedReduce } from '../viewModal/ISpeedReduce';
 
-const initialState = {
+const initialState: ISpeedReduce = {
     download: null,
     upload: null,
     ping: null,
@@ -11,8 +12,17 @@ export const speedSlice = createSlice({
     name: 'speedTest',
     initialState,
     reducers: {
-        setterValues: (state, action) => {
-            state[action.payload.name] = action.payload.value;
+        setPing: (state, action) => {
+            state.ping = action.payload.value;
+        },
+        setDownload: (state, action) => {
+            state.download = action.payload.value;
+        },
+        setUpload: (state, action) => {
+            state.upload = action.payload.value;
+        },
+        setCompleted: (state, action) => {
+            state.completed = action.payload.value;
         },
         reset: () => {
             return initialState
@@ -20,7 +30,7 @@ export const speedSlice = createSlice({
     }
 });
 
-export const { setterValues, reset } = speedSlice.actions
+export const { setPing, setUpload, setDownload, setCompleted, reset } = speedSlice.actions
 
 export default speedSlice.reducer
 
